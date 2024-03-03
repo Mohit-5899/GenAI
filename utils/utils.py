@@ -2,6 +2,10 @@ import io
 from pdf2image import convert_from_bytes
 from base64 import b64encode
 import google.generativeai as genai
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
 
 def input_pdf_setup(uploaded_file):
     if uploaded_file is not None:
@@ -30,3 +34,8 @@ def get_gemini_response(input,pdf_content,prompt):
     model=genai.GenerativeModel('gemini-pro-vision')
     response=model.generate_content([input,pdf_content[0],prompt])
     return response.text
+
+def api_authetication(key):
+    if key == getenv('API_AUTH_KEY'):
+        return True
+    return False
