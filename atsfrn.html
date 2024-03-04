@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATS Tracking System</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+    #ats-container {
+        background-color: #fff;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+        color: #5e9ca0;
+    }
+    #job-description-form, #resume-upload, #response {
+        margin-bottom: 20px;
+    }
+    input[type="file"], textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box; /* Added to maintain width of inputs */
+    }
+    button {
+        background-color: #5e9ca0;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+        width: 100%; /* Make the button full-width */
+    }
+    button:hover {
+        background-color: #4a8d7f;
+    }
+    #response div {
+        background-color: #e7f6f2;
+        padding: 10px;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+
+<div id="ats-container">
+    <h1>ATS Tracking System</h1>
+    <form id="job-description-form">
+        <h2>Job Description:</h2>
+        <textarea id="job-description" rows="4" placeholder="Enter the job description here..."></textarea>
+    </form>
+
+    <div id="resume-upload">
+        <h2>Upload your resume (PDF):</h2>
+        <input type="file" id="file-input" accept=".pdf"/>
+        <button onclick="uploadResume()">Upload</button>
+    </div>
+    
+    <div id="response-buttons">
+        <button id="btn-percentage-match">Percentage Match</button>
+        <button id="btn-missing-keywords">Missing Keywords</button>
+        <button id="btn-final-thoughts">Final Thoughts</button>
+    </div>
+    
+    <div id="response-content">
+        <!-- The content will be dynamically inserted here based on the button clicked -->
+    </div>
+</div>
+
+<script>
+    // This object will hold the response data to be used when the buttons are clicked
+    var responseData = {
+        percentageMatch: '',
+        missingKeywords: '',
+        finalThoughts: ''
+    };
+    
+    function uploadResume() {
+        // ... (the rest of the uploadResume function remains unchanged) ...
+    
+        // This part is where you handle the response from the server
+        .then(data => {
+            // Store the response data in the responseData object
+            responseData.percentageMatch = 'Percentage Match: ' + data.response.percentageMatch;
+            responseData.missingKeywords = 'Keywords Missing: ' + data.response.missingKeywords;
+            responseData.finalThoughts = 'Final Thoughts: ' + data.response.finalThoughts;
+    
+            // You can also call one of these to display the result immediately after upload
+            // displayResponse('percentageMatch');
+            // displayResponse('missingKeywords');
+            // displayResponse('finalThoughts');
+        })
+        // ...
+    }
+    
+    // Set up the event listeners for the buttons
+    document.getElementById('btn-percentage-match').addEventListener('click', function() {
+        displayResponse('percentageMatch');
+    });
+    
+    document.getElementById('btn-missing-keywords').addEventListener('click', function() {
+        displayResponse('missingKeywords');
+    });
+    
+    document.getElementById('btn-final-thoughts').addEventListener('click', function() {
+        displayResponse('finalThoughts');
+    });
+    
+    // Function to display the response data based on the button clicked
+    function displayResponse(type) {
+        var content = '';
+        switch(type) {
+            case 'percentageMatch':
+                content = responseData.percentageMatch;
+                break;
+            case 'missingKeywords':
+                content = responseData.missingKeywords;
+                break;
+            case 'finalThoughts':
+                content = responseData.finalThoughts;
+                break;
+        }
+        document.getElementById('response-content').innerText = content;
+    }
+    </script>
+    
+
+</body>
+</html>
